@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+  classroomdb:
+    image: postgres:latest
+    container_name: classroomdb
+    restart: always
+    environment:
+      - POSTGRES_USER=classroom
+      - POSTGRES_PASSWORD=classroom
+      - POSTGRES_DB=classroom
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./scripts/postgres/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+      - ./scripts/postgres/data:/var/lib/postgresql/data
