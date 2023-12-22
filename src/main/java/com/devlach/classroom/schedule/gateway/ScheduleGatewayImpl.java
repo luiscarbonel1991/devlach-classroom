@@ -1,7 +1,12 @@
 package com.devlach.classroom.schedule.gateway;
 
 import com.devlach.classroom.entity.ProfileType;
-import com.devlach.classroom.schedule.dto.*;
+import com.devlach.classroom.schedule.dto.regular.CreateRegularAvailabilityBatchDTO;
+import com.devlach.classroom.schedule.dto.regular.RegularAvailabilityDTO;
+import com.devlach.classroom.schedule.dto.regular.UpdateRegularAvailabilityBatchDTO;
+import com.devlach.classroom.schedule.dto.weekly.CreateWeeklyAvailabilityBatchDTO;
+import com.devlach.classroom.schedule.dto.weekly.UpdateWeeklyAvailabilityBatchDTO;
+import com.devlach.classroom.schedule.dto.weekly.WeeklyAvailabilityDTO;
 import com.devlach.classroom.schedule.mapper.ScheduleMapper;
 import com.devlach.classroom.schedule.service.RegularAvailabilityService;
 import com.devlach.classroom.schedule.service.WeeklyAvailabilityService;
@@ -47,9 +52,9 @@ public class ScheduleGatewayImpl implements ScheduleGateway {
     }
 
     @Override
-    public void deleteRegularAvailability(Long id, String email) {
+    public void deleteRegularAvailability(Long regularAvailabilityId, String email) {
         ProfileDTO profile = userGateway.findProfileByEmail(email, ProfileType.TEACHER);
-        regularAvailabilityService.delete(id, profile);
+        regularAvailabilityService.delete(regularAvailabilityId, profile);
     }
 
     @Override
@@ -62,5 +67,17 @@ public class ScheduleGatewayImpl implements ScheduleGateway {
     public List<WeeklyAvailabilityDTO> createWeeklyAvailability(String email, CreateWeeklyAvailabilityBatchDTO batchDTO) {
         ProfileDTO profile = userGateway.findProfileByEmail(email, ProfileType.TEACHER);
         return ScheduleMapper.mapWeeklyAvailabilityDTOList(weeklyAvailabilityService.create(batchDTO, profile));
+    }
+
+    @Override
+    public List<WeeklyAvailabilityDTO> updateWeeklyAvailability(String email, UpdateWeeklyAvailabilityBatchDTO batchDTO) {
+        ProfileDTO profile = userGateway.findProfileByEmail(email, ProfileType.TEACHER);
+        return ScheduleMapper.mapWeeklyAvailabilityDTOList(weeklyAvailabilityService.update(batchDTO, profile));
+    }
+
+    @Override
+    public void deleteWeeklyAvailability(Long weeklyAvailabilityId, String email) {
+        ProfileDTO profile = userGateway.findProfileByEmail(email, ProfileType.TEACHER);
+        weeklyAvailabilityService.delete(weeklyAvailabilityId, profile);
     }
 }

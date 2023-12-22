@@ -1,4 +1,4 @@
-package com.devlach.classroom.schedule.dto;
+package com.devlach.classroom.schedule.dto.regular;
 
 public record RegularAvailabilityDTO(
         Long id,

@@ -1,4 +1,4 @@
-package com.devlach.classroom.schedule.dto;
+package com.devlach.classroom.schedule.dto.regular;
 
 import com.devlach.classroom.schedule.enums.DayOfWeek;
 import com.devlach.classroom.utils.DateUtils;

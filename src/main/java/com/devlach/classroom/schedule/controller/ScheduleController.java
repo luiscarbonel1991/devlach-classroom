@@ -1,7 +1,12 @@
 package com.devlach.classroom.schedule.controller;
 
 
-import com.devlach.classroom.schedule.dto.*;
+import com.devlach.classroom.schedule.dto.regular.CreateRegularAvailabilityBatchDTO;
+import com.devlach.classroom.schedule.dto.regular.RegularAvailabilityDTO;
+import com.devlach.classroom.schedule.dto.regular.UpdateRegularAvailabilityBatchDTO;
+import com.devlach.classroom.schedule.dto.weekly.CreateWeeklyAvailabilityBatchDTO;
+import com.devlach.classroom.schedule.dto.weekly.UpdateWeeklyAvailabilityBatchDTO;
+import com.devlach.classroom.schedule.dto.weekly.WeeklyAvailabilityDTO;
 import com.devlach.classroom.schedule.gateway.ScheduleGateway;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -47,5 +52,16 @@ public class ScheduleController {
     @PostMapping("/weekly")
     public ResponseEntity<List<WeeklyAvailabilityDTO>> createWeeklyAvailability(@RequestBody CreateWeeklyAvailabilityBatchDTO batchDTO, @RequestParam String email) {
         return ResponseEntity.ok(scheduleGateway.createWeeklyAvailability(email, batchDTO));
+    }
+
+    @PutMapping("/weekly")
+    public ResponseEntity<List<WeeklyAvailabilityDTO>> updateWeeklyAvailability(@RequestBody UpdateWeeklyAvailabilityBatchDTO batchDTO, @RequestParam String email) {
+        return ResponseEntity.ok(scheduleGateway.updateWeeklyAvailability(email, batchDTO));
+    }
+
+    @DeleteMapping("/weekly/{weeklyAvailabilityId}")
+    public ResponseEntity<Void> deleteWeeklyAvailability(@PathVariable Long weeklyAvailabilityId, @RequestParam String email) {
+        scheduleGateway.deleteWeeklyAvailability(weeklyAvailabilityId, email);
+        return ResponseEntity.noContent().build();
     }
 }

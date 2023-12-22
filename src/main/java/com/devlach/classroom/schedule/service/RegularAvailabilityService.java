@@ -1,9 +1,9 @@
 package com.devlach.classroom.schedule.service;
 
 import com.devlach.classroom.entity.RegularAvailability;
-import com.devlach.classroom.schedule.dto.CreateRegularAvailabilityBatchDTO;
-import com.devlach.classroom.schedule.dto.CreateUpdateRegularAvailabilityDTO;
-import com.devlach.classroom.schedule.dto.UpdateRegularAvailabilityBatchDTO;
+import com.devlach.classroom.schedule.dto.regular.CreateRegularAvailabilityBatchDTO;
+import com.devlach.classroom.schedule.dto.regular.CreateUpdateRegularAvailabilityDTO;
+import com.devlach.classroom.schedule.dto.regular.UpdateRegularAvailabilityBatchDTO;
 import com.devlach.classroom.schedule.enums.DayOfWeek;
 import com.devlach.classroom.schedule.mapper.ScheduleMapper;
 import com.devlach.classroom.schedule.persistence.RegularAvailabilityRepository;

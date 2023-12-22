@@ -3,10 +3,10 @@ package com.devlach.classroom.schedule.mapper;
 import com.devlach.classroom.entity.Profile;
 import com.devlach.classroom.entity.RegularAvailability;
 import com.devlach.classroom.entity.WeeklyAvailability;
-import com.devlach.classroom.schedule.dto.CreateUpdateRegularAvailabilityDTO;
-import com.devlach.classroom.schedule.dto.CreateUpdateWeeklyAvailabilityDTO;
-import com.devlach.classroom.schedule.dto.RegularAvailabilityDTO;
-import com.devlach.classroom.schedule.dto.WeeklyAvailabilityDTO;
+import com.devlach.classroom.schedule.dto.regular.CreateUpdateRegularAvailabilityDTO;
+import com.devlach.classroom.schedule.dto.weekly.CreateUpdateWeeklyAvailabilityDTO;
+import com.devlach.classroom.schedule.dto.regular.RegularAvailabilityDTO;
+import com.devlach.classroom.schedule.dto.weekly.WeeklyAvailabilityDTO;
 import com.devlach.classroom.schedule.enums.DayOfWeek;
 import com.devlach.classroom.utils.DateUtils;
 import lombok.experimental.UtilityClass;
@@ -51,8 +51,8 @@ public class ScheduleMapper {
         return () -> new WeeklyAvailabilityDTO(
                 weeklyAvailability.getId(),
                 weeklyAvailability.getDate(),
-                weeklyAvailability.getStartTime(),
-                weeklyAvailability.getEndTime()
+                weeklyAvailability.getStartTime().toString(),
+                weeklyAvailability.getEndTime().toString()
         );
     }
 

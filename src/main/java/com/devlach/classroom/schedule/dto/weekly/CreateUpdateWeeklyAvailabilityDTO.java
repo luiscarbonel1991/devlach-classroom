@@ -1,4 +1,4 @@
-package com.devlach.classroom.schedule.dto;
+package com.devlach.classroom.schedule.dto.weekly;
 
 import com.devlach.classroom.utils.DateUtils;
 
@@ -20,18 +20,30 @@ public record CreateUpdateWeeklyAvailabilityDTO(
 
     public void validateCreate() {
         validateDate();
-        validateStartTime();
-        validateEndTime();
+        validateRangeTime();
     }
 
     public void validateUpdate() {
+        validateId();
+        validateDate();
+        validateRangeTime();
+    }
+
+    private void validateId() {
         if (id == null) {
             throw new IllegalArgumentException("id must be present");
         }
-        var date = validateDate();
-        if (date.isBefore(LocalDate.now())) {
+    }
+
+
+    private void validateDate() {
+        var parseDate = DateUtils.parseAvailabilityDate(date);
+        if (parseDate.isBefore(LocalDate.now())) {
             throw new IllegalArgumentException("date must be in the future");
         }
+    }
+
+    private void validateRangeTime() {
         var startTime = validateStartTime();
         var endTime = validateEndTime();
         if (startTime.isAfter(endTime) || startTime.equals(endTime)) {
@@ -39,17 +51,12 @@ public record CreateUpdateWeeklyAvailabilityDTO(
         }
     }
 
-
-    private LocalDate validateDate() {
-        return DateUtils.parseAvailabilityDate(date);
-    }
-
     private LocalTime validateStartTime() {
-       try {
-           return DateUtils.parseAvailabilityTime(startTime);
-       } catch (Exception e) {
-           throw new IllegalArgumentException("Invalid startTime format. Expected: HH:mm");
-       }
+        try {
+            return DateUtils.parseAvailabilityTime(startTime);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Invalid startTime format. Expected: HH:mm");
+        }
     }
 
     private LocalTime validateEndTime() {
