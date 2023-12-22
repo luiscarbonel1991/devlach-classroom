@@ -1,69 +1,77 @@
--- Creating the database tables
+create table public.app_users (
+                                  user_id bigint primary key not null default nextval('app_users_user_id_seq'::regclass),
+                                  username character varying(255) not null,
+                                  password character varying(255) not null,
+                                  email character varying(255) not null,
+                                  enabled boolean not null default true,
+                                  created_at timestamp without time zone,
+                                  updated_at timestamp without time zone
+);
+create unique index app_users_username_key on app_users using btree (username);
+create unique index app_users_email_key on app_users using btree (email);
 
--- User Table
-CREATE TABLE IF NOT EXISTS app_users (
-                       user_id BIGSERIAL PRIMARY KEY,
-                       username VARCHAR(255) UNIQUE NOT NULL,
-                       password VARCHAR(255) NOT NULL,
-                       email VARCHAR(255) UNIQUE NOT NULL,
-                       enabled BOOLEAN NOT NULL DEFAULT TRUE,
-                       created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-                       updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+
+
+create table public.classes (
+                                class_id bigint primary key not null default nextval('classes_class_id_seq'::regclass),
+                                teacher_profile_id bigint not null default nextval('classes_teacher_profile_id_seq'::regclass),
+                                student_profile_id bigint not null default nextval('classes_student_profile_id_seq'::regclass),
+                                start_time timestamp without time zone,
+                                end_time timestamp without time zone,
+                                status character varying(50),
+                                foreign key (student_profile_id) references public.profiles (profile_id)
+                                    match simple on update no action on delete no action,
+                                foreign key (teacher_profile_id) references public.profiles (profile_id)
+                                    match simple on update no action on delete no action
 );
 
--- Profile Table
-CREATE TABLE IF NOT EXISTS profiles (
-                          profile_id BIGSERIAL PRIMARY KEY,
-                          user_id BIGSERIAL NOT NULL,
-                          role VARCHAR(50) NOT NULL CHECK (role IN ('student', 'teacher')),
-                          full_name VARCHAR(255),
-                          bio TEXT,
-                          profile_pic_url VARCHAR(255),
-                          FOREIGN KEY (user_id) REFERENCES app_users(user_id)
+create table public.profiles (
+                                 profile_id bigint primary key not null default nextval('profiles_profile_id_seq'::regclass),
+                                 user_id bigint not null default nextval('profiles_user_id_seq'::regclass),
+                                 full_name character varying(255),
+                                 bio text,
+                                 profile_pic_url character varying(255),
+                                 profile_type character varying(50),
+                                 foreign key (user_id) references public.app_users (user_id)
+                                     match simple on update no action on delete no action
 );
 
--- Regular Availability Table for Teachers
-CREATE TABLE IF NOT EXISTS regular_availability (
-                                      availability_id BIGSERIAL PRIMARY KEY,
-                                      profile_id BIGSERIAL NOT NULL,
-                                      day_of_week VARCHAR(50) CHECK (day_of_week IN ('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday')),
-                                      start_time TIME WITHOUT TIME ZONE,
-                                      end_time TIME WITHOUT TIME ZONE,
-                                      FOREIGN KEY (profile_id) REFERENCES profiles(profile_id)
+create table public.regular_availability (
+                                             availability_id bigint primary key not null default nextval('regular_availability_availability_id_seq'::regclass),
+                                             profile_id bigint not null default nextval('regular_availability_profile_id_seq'::regclass),
+                                             day_of_week character varying(50),
+                                             start_time time without time zone,
+                                             end_time time without time zone,
+                                             created_at timestamp(6) without time zone,
+                                             deleted_at timestamp(6) without time zone,
+                                             updated_at timestamp(6) without time zone,
+                                             foreign key (profile_id) references public.profiles (profile_id)
+                                                 match simple on update no action on delete no action
 );
 
--- Weekly Availability Table for Teachers
-CREATE TABLE IF NOT EXISTS weekly_availability (
-                                     weekly_id BIGSERIAL PRIMARY KEY,
-                                     profile_id BIGSERIAL NOT NULL,
-                                     date DATE,
-                                     start_time TIME WITHOUT TIME ZONE,
-                                     end_time TIME WITHOUT TIME ZONE,
-                                     FOREIGN KEY (profile_id) REFERENCES profiles(profile_id)
+create table public.reviews (
+                                review_id bigint primary key not null default nextval('reviews_review_id_seq'::regclass),
+                                class_id bigint not null default nextval('reviews_class_id_seq'::regclass),
+                                student_profile_id bigint not null default nextval('reviews_student_profile_id_seq'::regclass),
+                                rating integer,
+                                comment text,
+                                created_at timestamp without time zone,
+                                foreign key (class_id) references public.classes (class_id)
+                                    match simple on update no action on delete no action,
+                                foreign key (student_profile_id) references public.profiles (profile_id)
+                                    match simple on update no action on delete no action
 );
 
--- Classes Table
-CREATE TABLE IF NOT EXISTS classes (
-                         class_id BIGSERIAL PRIMARY KEY,
-                         teacher_profile_id BIGSERIAL NOT NULL,
-                         student_profile_id BIGSERIAL NOT NULL,
-                         start_time TIMESTAMP WITHOUT TIME ZONE,
-                         end_time TIMESTAMP WITHOUT TIME ZONE,
-                         status VARCHAR(50) CHECK (status IN ('scheduled', 'completed', 'cancelled')),
-                         FOREIGN KEY (teacher_profile_id) REFERENCES profiles(profile_id),
-                         FOREIGN KEY (student_profile_id) REFERENCES profiles(profile_id)
+create table public.weekly_availability (
+                                            weekly_id bigint primary key not null default nextval('weekly_availability_weekly_id_seq'::regclass),
+                                            profile_id bigint not null default nextval('weekly_availability_profile_id_seq'::regclass),
+                                            date date,
+                                            start_time time without time zone,
+                                            end_time time without time zone,
+                                            created_at timestamp(6) without time zone,
+                                            deleted_at timestamp(6) without time zone,
+                                            updated_at timestamp(6) without time zone,
+                                            foreign key (profile_id) references public.profiles (profile_id)
+                                                match simple on update no action on delete no action
 );
 
--- Reviews Table
-CREATE TABLE IF NOT EXISTS reviews (
-                         review_id BIGSERIAL PRIMARY KEY,
-                         class_id BIGSERIAL NOT NULL,
-                         student_profile_id BIGSERIAL NOT NULL,
-                         rating INT CHECK (rating >= 1 AND rating <= 5),
-                         comment TEXT,
-                         created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-                         FOREIGN KEY (class_id) REFERENCES classes(class_id),
-                         FOREIGN KEY (student_profile_id) REFERENCES profiles(profile_id)
-);
-
--- Additional indices, unique constraints, and optimizations as needed
