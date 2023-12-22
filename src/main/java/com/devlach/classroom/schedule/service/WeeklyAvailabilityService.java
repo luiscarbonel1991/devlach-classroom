@@ -1,5 +1,8 @@
 package com.devlach.classroom.schedule.service;
 
+import com.devlach.classroom.api.exception.BadRequestException;
+import com.devlach.classroom.api.exception.ConflictException;
+import com.devlach.classroom.api.exception.NotFoundException;
 import com.devlach.classroom.entity.WeeklyAvailability;
 import com.devlach.classroom.schedule.dto.weekly.CreateUpdateWeeklyAvailabilityDTO;
 import com.devlach.classroom.schedule.dto.weekly.CreateWeeklyAvailabilityBatchDTO;
@@ -27,8 +30,9 @@ public class WeeklyAvailabilityService {
 
     public List<WeeklyAvailabilityDTO> findAll(ProfileDTO profile, String startDate, String endDate) {
         var dateRange = DateUtils.parseRangeAvailabilityDate(startDate, endDate);
-        if (dateRange.localDates().size() > WEEKLY_QUANTITY_DAYS) {
-            throw new IllegalArgumentException("Date range must be less than 7 days");
+        var quantityDays = dateRange.localDates().size();
+        if (quantityDays > WEEKLY_QUANTITY_DAYS) {
+            throw BadRequestException.invalidWeeklyQuantityDays(dateRange.localDates().size());
         }
         List<WeeklyAvailability> availability = weeklyAvailabilityRepository.findAllByProfileIdAndDateBetweenAndDeletedAtIsNull(profile.id(), dateRange.getStart(), dateRange.getEnd());
         return ScheduleMapper.mapWeeklyAvailabilityDTOList(availability);
@@ -59,7 +63,7 @@ public class WeeklyAvailabilityService {
                 .filter(availability -> startTime.isBefore(availability.getEndTime()) && endTime.isAfter(availability.getStartTime()))
                 .findFirst()
                 .ifPresent(availability -> {
-                    throw new IllegalArgumentException("There is already an availability for the same date and time overlap");
+                    throw ConflictException.weeklyAvailabilityOverlap(date, startTime, endTime);
                 });
         availabilities.add(entityToCreate);
         return weeklyAvailabilityRepository.save(entityToCreate);
@@ -82,14 +86,14 @@ public class WeeklyAvailabilityService {
         var entityToUpdate = availabilities.stream()
                 .filter(availability -> availability.getId().equals(dto.id()))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Availability not found"));
+                .orElseThrow(() -> NotFoundException.weeklyAvailabilityId(dto.id()));
         availabilities.stream()
                 .filter(availability -> !availability.getId().equals(dto.id()))
                 .filter(availability -> availability.getDate().equals(date))
                 .filter(availability -> startTime.isBefore(availability.getEndTime()) && endTime.isAfter(availability.getStartTime()))
                 .findFirst()
                 .ifPresent(availability -> {
-                    throw new IllegalArgumentException("There is already an availability for the same date and time overlap");
+                    throw ConflictException.weeklyAvailabilityOverlap(date, startTime, endTime);
                 });
         entityToUpdate.setDate(date);
         entityToUpdate.setStartTime(startTime);
@@ -101,7 +105,7 @@ public class WeeklyAvailabilityService {
         WeeklyAvailability availability = weeklyAvailabilityRepository.findAllByProfileIdAndIdInAndDeletedAtIsNull(profile.id(), List.of(weeklyAvailabilityId))
                 .stream()
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Availability not found"));
+                .orElseThrow(() -> NotFoundException.weeklyAvailabilityId(weeklyAvailabilityId));
         availability.setDeletedAt(Instant.now());
         weeklyAvailabilityRepository.save(availability);
     }

@@ -1,5 +1,7 @@
 package com.devlach.classroom.schedule.service;
 
+import com.devlach.classroom.api.exception.ConflictException;
+import com.devlach.classroom.api.exception.NotFoundException;
 import com.devlach.classroom.entity.RegularAvailability;
 import com.devlach.classroom.schedule.dto.regular.CreateRegularAvailabilityBatchDTO;
 import com.devlach.classroom.schedule.dto.regular.CreateUpdateRegularAvailabilityDTO;
@@ -9,9 +11,7 @@ import com.devlach.classroom.schedule.mapper.ScheduleMapper;
 import com.devlach.classroom.schedule.persistence.RegularAvailabilityRepository;
 import com.devlach.classroom.users.dto.ProfileDTO;
 import jakarta.transaction.Transactional;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
 import java.util.List;
@@ -36,6 +36,7 @@ public class RegularAvailabilityService {
 
     @Transactional
     public List<RegularAvailability> create(CreateRegularAvailabilityBatchDTO batchDTO, ProfileDTO profile) {
+        batchDTO.validate();
         List<RegularAvailability> availability = findAllByProfileId(profile.id());
         return batchDTO.regularAvailabilities().stream()
                 .map(dto -> create(dto, profile, availability))
@@ -56,8 +57,6 @@ public class RegularAvailabilityService {
     }
 
     public RegularAvailability create(CreateUpdateRegularAvailabilityDTO dto, ProfileDTO profile, List<RegularAvailability> availability) {
-        dto.validateCreate();
-
         var start = dto.getStartTime();
         var end = dto.getEndTime();
         var optionalAvailability = availability.stream()
@@ -65,9 +64,7 @@ public class RegularAvailabilityService {
                 .filter(a -> a.getStartTime().isBefore(end) && a.getEndTime().isAfter(start))
                 .findFirst();
         if (optionalAvailability.isPresent()) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    "There is already an availability for this time");
+            throw ConflictException.regularAvailabilityOverlap(dto.getDayOfWeek(), start, end);
         }
         RegularAvailability entity = ScheduleMapper.map(dto, profile.id()).toEntity();
         availability.add(entity);
@@ -82,16 +79,14 @@ public class RegularAvailabilityService {
         var availabilityToUpdate = availability.stream()
                 .filter(a -> a.getId().equals(dto.id()))
                 .findFirst()
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Availability not found"));
+                .orElseThrow(() -> NotFoundException.regularAvailabilityId(dto.id()));
         var optionalAvailability = availability.stream()
                 .filter(a -> !a.getId().equals(availabilityToUpdate.getId()))
                 .filter(a -> DayOfWeek.of(a.getDayOfWeek()).equals(dto.getDayOfWeek()))
                 .filter(a -> a.getStartTime().isBefore(end) && a.getEndTime().isAfter(start))
                 .findFirst();
         if (optionalAvailability.isPresent()) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    "There is already an availability for this time");
+            throw ConflictException.regularAvailabilityOverlap(dto.getDayOfWeek(), start, end);
         }
         RegularAvailability entity = ScheduleMapper.map(dto, profile.id()).toEntity();
         availability.stream()
@@ -109,7 +104,7 @@ public class RegularAvailabilityService {
         RegularAvailability availability = regularAvailabilityRepository.findAllByProfileIdAndIdInAndDeletedAtIsNull(profile.id(), List.of(id))
                 .stream()
                 .findFirst()
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Availability not found"));
+                .orElseThrow(() -> NotFoundException.regularAvailabilityId(id));
         availability.setDeletedAt(Instant.now());
         regularAvailabilityRepository.save(availability);
     }

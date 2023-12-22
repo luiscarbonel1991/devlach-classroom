@@ -1,5 +1,6 @@
 package com.devlach.classroom.schedule.dto.regular;
 
+import com.devlach.classroom.api.exception.BadRequestException;
 import com.devlach.classroom.schedule.enums.DayOfWeek;
 import com.devlach.classroom.utils.DateUtils;
 
@@ -24,19 +25,19 @@ public record CreateUpdateRegularAvailabilityDTO(
         LocalTime start = validateStartTime();
         LocalTime end = validateEndTime();
         if (start.isAfter(end) || start.equals(end)) {
-            throw new IllegalArgumentException("startTime must be before endTime");
+            throw BadRequestException.startTimeMustBeBeforeEndTime(startTime, endTime);
         }
     }
 
     public void validateUpdate() {
         if (id == null) {
-            throw new IllegalArgumentException("id must be present");
+            throw BadRequestException.requiredField("id");
         }
         DayOfWeek.of(dayOfWeek);
         LocalTime start = validateStartTime();
         LocalTime end = validateEndTime();
         if (start.isAfter(end) || start.equals(end)) {
-            throw new IllegalArgumentException("startTime must be before endTime");
+            throw BadRequestException.startTimeMustBeBeforeEndTime(startTime, endTime);
         }
     }
 
@@ -56,7 +57,7 @@ public record CreateUpdateRegularAvailabilityDTO(
         try {
             return DateUtils.parseAvailabilityTime(startTime);
         } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("Invalid endTime format. Expected: " + DateUtils.AVAILABILITY_TIME_FORMAT);
+            throw BadRequestException.invalidWeeklyStartTimeFormat(startTime);
         }
     }
 
@@ -64,7 +65,7 @@ public record CreateUpdateRegularAvailabilityDTO(
         try {
             return DateUtils.parseAvailabilityTime(endTime);
         } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("Invalid endTime format. Expected: " + DateUtils.AVAILABILITY_TIME_FORMAT);
+            throw BadRequestException.invalidWeeklyEndTimeFormat(startTime);
         }
     }
 }
