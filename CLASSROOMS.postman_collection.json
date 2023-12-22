@@ -1,0 +1,366 @@
+{
+	"info": {
+		"_postman_id": "96b95def-c85b-4ed5-a8c7-7db4cbbbfa9d",
+		"name": "CLASSROOMS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "14455839"
+	},
+	"item": [
+		{
+			"name": "schedule",
+			"item": [
+				{
+					"name": "regular",
+					"item": [
+						{
+							"name": "availability-regular-list",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{class-room-local-base-url}}/availability/regular?email=devuser@example.com",
+									"host": [
+										"{{class-room-local-base-url}}"
+									],
+									"path": [
+										"availability",
+										"regular"
+									],
+									"query": [
+										{
+											"key": "email",
+											"value": "devuser@example.com"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "availability-regular-create",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"regularAvailabilities\": [\n    {\n      \"dayOfWeek\": \"Monday\",\n      \"startTime\": \"02:00\",\n      \"endTime\": \"03:00\"\n    },\n    {\n      \"dayOfWeek\": \"Tuesday\",\n      \"startTime\": \"09:00\",\n      \"endTime\": \"11:00\"\n    },\n     {\n      \"dayOfWeek\": \"Monday\",\n      \"startTime\": \"08:00\",\n      \"endTime\": \"09:00\"\n    }\n  ]\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{class-room-local-base-url}}/availability/regular?email=onlystudent@gmail.com",
+									"host": [
+										"{{class-room-local-base-url}}"
+									],
+									"path": [
+										"availability",
+										"regular"
+									],
+									"query": [
+										{
+											"key": "email",
+											"value": "onlystudent@gmail.com"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "availability-regular-update",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"regularAvailabilities\": [\n        {\n            \"id\": 1,\n            \"dayOfWeek\": \"Monday\",\n            \"startTime\": \"09:00\",\n            \"endTime\": \"11:00\"\n        },\n        {\n            \"id\": 500,\n            \"dayOfWeek\": \"Tuesday\",\n            \"startTime\": \"09:00\",\n            \"endTime\": \"11:00\"\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{class-room-local-base-url}}/availability/regular?email=devuser@example.com",
+									"host": [
+										"{{class-room-local-base-url}}"
+									],
+									"path": [
+										"availability",
+										"regular"
+									],
+									"query": [
+										{
+											"key": "email",
+											"value": "devuser@example.com"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "availability-regular-delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"regularAvailabilities\": [\n    {\n      \"dayOfWeek\": \"Monday\",\n      \"startTime\": \"02:00\",\n      \"endTime\": \"03:00\"\n    },\n    {\n      \"dayOfWeek\": \"Tuesday\",\n      \"startTime\": \"11:00\",\n      \"endTime\": \"12:00\"\n    },\n     {\n      \"dayOfWeek\": \"Monday\",\n      \"startTime\": \"08:00\",\n      \"endTime\": \"09:00\"\n    }\n  ]\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{class-room-local-base-url}}/availability/regular/4?email=devuser@example.com",
+									"host": [
+										"{{class-room-local-base-url}}"
+									],
+									"path": [
+										"availability",
+										"regular",
+										"4"
+									],
+									"query": [
+										{
+											"key": "email",
+											"value": "devuser@example.com"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "weekly",
+					"item": [
+						{
+							"name": "availability-weekly-list",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{class-room-local-base-url}}/availability/weekly?email=devuser@example.com&start=2023-12-23&end=2023-12-27",
+									"host": [
+										"{{class-room-local-base-url}}"
+									],
+									"path": [
+										"availability",
+										"weekly"
+									],
+									"query": [
+										{
+											"key": "email",
+											"value": "devuser@example.com"
+										},
+										{
+											"key": "start",
+											"value": "2023-12-23"
+										},
+										{
+											"key": "end",
+											"value": "2023-12-27"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "availability-weekly-create",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"weeklyAvailabilities\": [\n      \n         {\n            \"date\": \"2023-12-23\",\n            \"startTime\": \"15:00\",\n            \"endTime\": \"17:00\"\n        },\n          {\n            \"date\": \"2023-12-23\",\n            \"startTime\": \"11:00\",\n            \"endTime\": \"12:00\"\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{class-room-local-base-url}}/availability/weekly?email=devuser@example.com",
+									"host": [
+										"{{class-room-local-base-url}}"
+									],
+									"path": [
+										"availability",
+										"weekly"
+									],
+									"query": [
+										{
+											"key": "email",
+											"value": "devuser@example.com"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "availability-weekly-update",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"weeklyAvailabilities\": [\n        {\n            \"id\": \"2\",\n            \"date\": \"2023-12-23\",\n            \"startTime\": \"10:00\",\n            \"endTime\": \"11:00\"\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{class-room-local-base-url}}/availability/weekly?email=devuser@example.com",
+									"host": [
+										"{{class-room-local-base-url}}"
+									],
+									"path": [
+										"availability",
+										"weekly"
+									],
+									"query": [
+										{
+											"key": "email",
+											"value": "devuser@example.com"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "availability-weekly-delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{class-room-local-base-url}}/availability/weekly/4?email=devuser@example.com",
+									"host": [
+										"{{class-room-local-base-url}}"
+									],
+									"path": [
+										"availability",
+										"weekly",
+										"4"
+									],
+									"query": [
+										{
+											"key": "email",
+											"value": "devuser@example.com"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "register",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"dev@test.com\",\n    \"password\": \"dummyPassword\",\n    \"fullName\": \"Dummy\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{class-room-local-base-url}}/users/register",
+							"host": [
+								"{{class-room-local-base-url}}"
+							],
+							"path": [
+								"users",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findBy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{class-room-local-base-url}}/users?email=dev@test.com",
+							"host": [
+								"{{class-room-local-base-url}}"
+							],
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "dev@test.com"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "class-room-local-base-url",
+			"value": "http://localhost:8080/api/v1",
+			"type": "string"
+		}
+	]
+}
