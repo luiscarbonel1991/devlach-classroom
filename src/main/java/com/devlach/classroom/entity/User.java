@@ -36,4 +36,16 @@ public class User {
     @JsonManagedReference
     private List<Profile> profiles;
 
+    @PrePersist
+    private void prePersist() {
+        if (createAt == null) {
+            createAt = Instant.now();
+        }
+    }
+
+    @PreUpdate
+    private void preUpdate() {
+        updatedAt = Instant.now();
+    }
+
 }

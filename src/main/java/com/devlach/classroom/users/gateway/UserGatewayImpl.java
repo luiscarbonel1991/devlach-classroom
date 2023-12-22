@@ -1,7 +1,9 @@
 package com.devlach.classroom.users.gateway;
 
+import com.devlach.classroom.api.exception.NotFoundException;
 import com.devlach.classroom.entity.ProfileType;
 import com.devlach.classroom.users.dto.ProfileDTO;
+import com.devlach.classroom.users.dto.RegisterUserDTO;
 import com.devlach.classroom.users.dto.UserDTO;
 import com.devlach.classroom.users.mapper.UserMapper;
 import com.devlach.classroom.users.service.UserService;
@@ -22,9 +24,7 @@ public class UserGatewayImpl implements UserGateway {
     public UserDTO findByEmail(String email) {
         return userService.findUserByEmail(email)
                 .map(user -> UserMapper.map(user).toUserDTO())
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
-                        "User not found"));
+                .orElseThrow(() -> NotFoundException.userEmail(email));
     }
 
     @Override
@@ -33,9 +33,12 @@ public class UserGatewayImpl implements UserGateway {
                 .stream()
                 .filter(profileDTO -> type.equals(profileDTO.type()))
                 .findFirst()
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
-                        "Profile not found"));
+                .orElseThrow(() -> NotFoundException.userHasNoProfile(email, type.name().toLowerCase()));
+    }
+
+    @Override
+    public UserDTO registerUser(RegisterUserDTO registerUserDTO) {
+        return UserMapper.map(userService.registerUser(registerUserDTO)).toUserDTO();
     }
 
 
