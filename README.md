@@ -41,6 +41,7 @@ docker-compose -f ./docker/docker-compose-local.yml up classroomdb
 ```
 
 ## Documentation
+[![Postman Collection](https://run.pstmn.io/button.svg)](CLASSROOMS.postman_collection.json)
 
 ## FAQ
 
