@@ -5,6 +5,7 @@ import com.devlach.classroom.utils.DateUtils;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 
 public record CreateUpdateWeeklyAvailabilityDTO(
         Long id,
@@ -38,9 +39,16 @@ public record CreateUpdateWeeklyAvailabilityDTO(
 
 
     private void validateDate() {
-        var parseDate = DateUtils.parseAvailabilityDate(date);
-        if (parseDate.isBefore(LocalDate.now())) {
-            throw BadRequestException.dateMustBeInTheFuture(date);
+        if (date == null) {
+            throw BadRequestException.requiredField("date");
+        }
+        try{
+            var parseDate = DateUtils.parseAvailabilityDate(date);
+            if (parseDate.isBefore(LocalDate.now())) {
+                throw BadRequestException.dateMustBeInTheFuture(date);
+            }
+        } catch (DateTimeParseException e) {
+            throw BadRequestException.invalidWeeklyDate(date);
         }
     }
 
@@ -53,6 +61,9 @@ public record CreateUpdateWeeklyAvailabilityDTO(
     }
 
     private LocalTime validateStartTime() {
+        if (startTime == null) {
+            throw BadRequestException.requiredField("startTime");
+        }
         try {
             return DateUtils.parseAvailabilityTime(startTime);
         } catch (Exception e) {
@@ -61,6 +72,9 @@ public record CreateUpdateWeeklyAvailabilityDTO(
     }
 
     private LocalTime validateEndTime() {
+        if (endTime == null) {
+            throw BadRequestException.requiredField("endTime");
+        }
         try {
             return DateUtils.parseAvailabilityTime(endTime);
         } catch (Exception e) {

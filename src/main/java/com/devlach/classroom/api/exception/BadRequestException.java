@@ -89,6 +89,12 @@ public class BadRequestException extends AppException {
         String message = String.format("%s. Field name: %s, Content: %s", errorCode.getMessageCode(), fieldName, content);
         return new BadRequestException(errorCode, message);
     }
+
+    public static BadRequestException invalidWeeklyDate(String date) {
+        ErrorCode errorCode = ErrorCode.BAD_REQUEST_INVALID_WEEKLY_DATE;
+        String message = String.format("%s. Invalid date format. Expected: %s. Received: %s", errorCode.getMessageCode(), DateUtils.AVAILABILITY_DATE_FORMAT, date);
+        return new BadRequestException(errorCode, message);
+    }
 }
 
 

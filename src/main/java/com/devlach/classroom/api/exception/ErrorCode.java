@@ -9,6 +9,8 @@ public enum ErrorCode {
     INVALID_REQUEST("Invalid request"),
     BAD_REQUEST_REQUIRED_FIELD("Required field"),
     BAD_REQUEST_INVALID_WEEKLY_QUANTITY_DAYS("Invalid weekly quantity days"),
+
+    BAD_REQUEST_INVALID_WEEKLY_DATE("Invalid weekly date format"),
     BAD_REQUEST_INVALID_WEEKLY_START_TIME("Invalid weekly start time"),
     BAD_REQUEST_INVALID_WEEKLY_END_TIME("Invalid weekly end time"),
     BAD_REQUEST_STAR_TIME_MUST_BE_BEFORE_END_TIME("Start time must be before end time"),

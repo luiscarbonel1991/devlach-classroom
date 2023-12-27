@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter;
 public class DateUtils {
 
     public static final String AVAILABILITY_TIME_FORMAT = "HH:mm";
-    private static final String AVAILABILITY_DATE_FORMAT = "yyyy-MM-dd";
+    public static final String AVAILABILITY_DATE_FORMAT = "yyyy-MM-dd";
 
     private static final DateTimeFormatter AVAILABILITY_TIME_FORMATTER = DateTimeFormatter.ofPattern(AVAILABILITY_TIME_FORMAT);
 
