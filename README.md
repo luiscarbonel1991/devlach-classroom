@@ -16,7 +16,7 @@
 - Schedule Regular and Weekly Availability for a Teacher.
 
 ## Dependencies
-- [PostgreSQL](https://www.postgresql.org/)
+- [PostgresSQL](https://www.postgresql.org/)
 - [Java Corretto 21](https://sdkman.io/jdks)
 - [Docker](https://docs.docker.com/install/)
 - [Gradle](https://gradle.org/)
@@ -25,12 +25,29 @@
 ## How To Use
 - Make sure you have the dependencies installed and running.
 
+### Install Java with [SDKMAN](https://sdkman.io/jdks).
+
+- Install Java Version
+```shell
+sdk install java <version>
+```
+- Use Java Version
+```shell
+sdk use java <version>
+```
+
 ### Local Development
 
 ### Starting the database
 
+- Run the following command to start the database.
 ```shell
 docker-compose -f ./docker/docker-compose-local.yml up classroomdb
+```
+
+- Clean the database.
+```shell
+docker-compose -f ./docker/docker-compose-local.yml down -v
 ```
 
 ### Running the project
