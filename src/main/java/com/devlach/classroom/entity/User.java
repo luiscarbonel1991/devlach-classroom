@@ -8,7 +8,7 @@ import java.time.Instant;
 import java.util.List;
 
 @Entity
-@Table(name = "app_users")
+@Table(name = "app_user")
 @Data
 public class User {
 

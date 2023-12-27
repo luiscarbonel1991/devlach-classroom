@@ -47,6 +47,54 @@ public class BadRequestException extends AppException {
         String message = String.format("%s. Date: %s", errorCode.getMessageCode(), date);
         return new BadRequestException(errorCode, message);
     }
+
+    public static BadRequestException invalidClassPackageDuration(String duration) {
+        ErrorCode errorCode = ErrorCode.BAD_REQUEST_INVALID_CLASS_PACKAGE_DURATION;
+        String message = String.format("%s. Duration: %s", errorCode.getMessageCode(), duration);
+        return new BadRequestException(errorCode, message);
+    }
+
+    public static BadRequestException invalidDayOfWeek(String dayOfWeek) {
+        ErrorCode errorCode = ErrorCode.BAD_REQUEST_INVALID_DAY_OF_WEEK;
+        String message = String.format("%s. Day of week: %s", errorCode.getMessageCode(), dayOfWeek);
+        return new BadRequestException(errorCode, message);
+    }
+
+    public static BadRequestException invalidClassPackageStatus(String status) {
+        ErrorCode errorCode = ErrorCode.BAD_REQUEST_INVALID_CLASS_PACKAGE_STATUS;
+        String message = String.format("%s. Status: %s", errorCode.getMessageCode(), status);
+        return new BadRequestException(errorCode, message);
+    }
+
+    public static BadRequestException pricePerHourMustBeGreaterThanZero(double pricePerHour) {
+        ErrorCode errorCode = ErrorCode.BAD_REQUEST_PRICE_PER_HOUR_MUST_BE_GREATER_THAN_ZERO;
+        String message = String.format("%s. Price per hour: %s", errorCode.getMessageCode(), pricePerHour);
+        return new BadRequestException(errorCode, message);
+    }
+
+    public static BadRequestException priceTrialMustBeGreaterThanZero(double priceTrial) {
+        ErrorCode errorCode = ErrorCode.BAD_REQUEST_PRICE_TRIAL_MUST_BE_GREATER_THAN_ZERO;
+        String message = String.format("%s. Price trial: %s", errorCode.getMessageCode(), priceTrial);
+        return new BadRequestException(errorCode, message);
+    }
+
+    public static BadRequestException pricePerHourMustBeGreaterThanPriceTrial(double pricePerHour, double priceTrial) {
+        ErrorCode errorCode = ErrorCode.BAD_REQUEST_PRICE_PER_HOUR_MUST_BE_GREATER_THAN_PRICE_TRIAL;
+        String message = String.format("%s. Price per hour: %s, Price trial: %s", errorCode.getMessageCode(), pricePerHour, priceTrial);
+        return new BadRequestException(errorCode, message);
+    }
+
+    public static BadRequestException invalidField(String fieldName, String content) {
+        ErrorCode errorCode = ErrorCode.BAD_REQUEST_INVALID_FIELD;
+        String message = String.format("%s. Field name: %s, Content: %s", errorCode.getMessageCode(), fieldName, content);
+        return new BadRequestException(errorCode, message);
+    }
+
+    public static BadRequestException invalidWeeklyDate(String date) {
+        ErrorCode errorCode = ErrorCode.BAD_REQUEST_INVALID_WEEKLY_DATE;
+        String message = String.format("%s. Invalid date format. Expected: %s. Received: %s", errorCode.getMessageCode(), DateUtils.AVAILABILITY_DATE_FORMAT, date);
+        return new BadRequestException(errorCode, message);
+    }
 }
 
 

@@ -55,6 +55,9 @@ public record CreateUpdateRegularAvailabilityDTO(
 
     private LocalTime validateStartTime() {
         try {
+            if (startTime == null) {
+                throw BadRequestException.requiredField("startTime");
+            }
             return DateUtils.parseAvailabilityTime(startTime);
         } catch (DateTimeParseException e) {
             throw BadRequestException.invalidWeeklyStartTimeFormat(startTime);
@@ -63,6 +66,9 @@ public record CreateUpdateRegularAvailabilityDTO(
 
     private LocalTime validateEndTime() {
         try {
+            if (endTime == null) {
+                throw BadRequestException.requiredField("endTime");
+            }
             return DateUtils.parseAvailabilityTime(endTime);
         } catch (DateTimeParseException e) {
             throw BadRequestException.invalidWeeklyEndTimeFormat(startTime);

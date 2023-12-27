@@ -1,50 +1,45 @@
 package com.devlach.classroom.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.util.List;
 
 @Entity
-@Table(name = "course_class")
+@Table(name = "class_package")
 @Data
-public class CourseClass {
+public class ClassPackage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "class_id")
+    @Column(name = "class_package_id")
     private Long id;
 
-    private LocalDate date;
-    private LocalTime startTime;
-    private LocalTime endTime;
+    private String title;
+    private int numberOfClasses;
+    private int remainingClasses;
+    private int durationInMinutes;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "teacher_profile_id")
-    private Profile teacherProfile;
+    @Column(name = "is_trial")
+    private boolean isTrial;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private ClassPackageStatusType status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "student_profile_id")
     private Profile studentProfile;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "class_package_id")
-    @JsonBackReference
-    private ClassPackage classPackage;
+    @JoinColumn(name = "course_price_id")
+    private CoursePricing coursePricing;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status")
-    private ClassStatusType status;
-
-    private String focus;
-
-    private String curseName;
-    private String lastLessonSummary;
-
-    private String link;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "classPackage")
+    @JsonManagedReference
+    private List<CourseClass> classes;
 
     @Column(name = "created_at", updatable = false)
     private Instant createdAt;
@@ -63,4 +58,5 @@ public class CourseClass {
     private void preUpdate() {
         updatedAt = Instant.now();
     }
+
 }

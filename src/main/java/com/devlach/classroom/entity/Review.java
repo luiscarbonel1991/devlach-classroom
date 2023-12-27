@@ -6,7 +6,7 @@ import lombok.Data;
 import java.time.Instant;
 
 @Entity
-@Table(name = "reviews")
+@Table(name = "review")
 @Data
 public class Review {
 
@@ -25,5 +25,23 @@ public class Review {
 
     private int rating;
     private String comment;
+
+    @Column(name = "created_at", updatable = false)
     private Instant createdAt;
+
+    @Column(name = "updated_at")
+    private Instant updatedAt;
+
+    @PrePersist
+    private void prePersist() {
+        if (createdAt == null) {
+            createdAt = Instant.now();
+        }
+    }
+
+    @PreUpdate
+    private void preUpdate() {
+        updatedAt = Instant.now();
+    }
+
 }
