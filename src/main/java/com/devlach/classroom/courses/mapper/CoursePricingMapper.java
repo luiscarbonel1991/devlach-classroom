@@ -22,8 +22,9 @@ public class CoursePricingMapper {
     public static ToCoursePricingDTO map(CoursePricing coursePricing) {
         return () -> new CoursePricingDTO(
                 coursePricing.getId(),
-                coursePricing.getPricePerHour().toString(),
-                coursePricing.getPriceTrial().toString()
+                coursePricing.getPricePerHour(),
+                coursePricing.getPriceTrial(),
+                coursePricing.getCreatedAt()
         );
     }
 }

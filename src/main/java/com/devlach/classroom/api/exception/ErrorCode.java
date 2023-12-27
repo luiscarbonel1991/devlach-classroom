@@ -6,7 +6,7 @@ import com.devlach.classroom.schedule.enums.DayOfWeek;
 
 public enum ErrorCode {
     // 400
-    INVALID_REQUEST("Invalid request"),
+    BAD_REQUEST_INVALID_REQUEST("Invalid request"),
     BAD_REQUEST_REQUIRED_FIELD("Required field"),
     BAD_REQUEST_INVALID_WEEKLY_QUANTITY_DAYS("Invalid weekly quantity days"),
 

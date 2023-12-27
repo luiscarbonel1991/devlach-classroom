@@ -6,7 +6,6 @@ import com.devlach.classroom.courses.mapper.CourseMapper;
 import com.devlach.classroom.courses.mapper.CoursePricingMapper;
 import com.devlach.classroom.courses.persistence.repository.CoursePricingRepository;
 import com.devlach.classroom.courses.persistence.repository.CourseRepository;
-import com.devlach.classroom.entity.ClassPackage;
 import com.devlach.classroom.entity.Course;
 import com.devlach.classroom.entity.CoursePricing;
 import com.devlach.classroom.users.dto.ProfileDTO;
@@ -14,10 +13,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class CourseService {
@@ -51,11 +47,6 @@ public class CourseService {
                 .orElseThrow(() -> NotFoundException.courseId(courseId));
     }
 
-    public CoursePricing findCoursePricingById(Long coursePricingId) {
-        return coursePricingRepository.findById(coursePricingId)
-                .orElseThrow(() -> NotFoundException.coursePricingId(coursePricingId));
-    }
-
     @Transactional
     public Course update(Long courseId, CreateUpdateCourseDTO courseDTO, ProfileDTO profile) {
         var currentCourse = findByCourseIdAndTeacherId(courseId, profile.id());
@@ -66,11 +57,12 @@ public class CourseService {
             currentCourse.setDescription(courseDTO.description());
         }
 
-        if(courseDTO.hasPricing()) {
+        if (courseDTO.hasPricing()) {
             var coursePricingToCreate = CoursePricingMapper.map(courseDTO.pricing(), courseId).toEntity();
             var coursePricingCreated = coursePricingRepository.save(coursePricingToCreate);
             var currentList = new ArrayList<>(currentCourse.getPricing().stream().filter(coursePricing -> !Objects.equals(coursePricing.getId(), coursePricingCreated.getId())).toList());
             currentList.add(coursePricingCreated);
+            currentList.sort(Comparator.comparing(CoursePricing::getCreatedAt).reversed());
             currentCourse.setPricing(currentList);
         }
         return courseRepository.save(currentCourse);
@@ -82,5 +74,8 @@ public class CourseService {
         courseRepository.save(course);
     }
 
-
+    public CoursePricing findCoursePricingById(Long coursePricingId) {
+        return coursePricingRepository.findById(coursePricingId)
+                .orElseThrow(() -> NotFoundException.coursePricingId(coursePricingId));
+    }
 }

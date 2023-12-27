@@ -1,8 +1,12 @@
 package com.devlach.classroom.courses.dto;
 
+import java.math.BigDecimal;
+import java.time.Instant;
+
 public record CoursePricingDTO(
         Long id,
-        String pricePerHour,
-        String priceTrial
+        BigDecimal pricePerHour,
+        BigDecimal priceTrial,
+        Instant createdAt
 ) {
 }

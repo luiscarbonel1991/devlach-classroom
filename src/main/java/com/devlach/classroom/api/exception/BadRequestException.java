@@ -2,6 +2,7 @@ package com.devlach.classroom.api.exception;
 
 import com.devlach.classroom.utils.DateUtils;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -93,6 +94,12 @@ public class BadRequestException extends AppException {
     public static BadRequestException invalidWeeklyDate(String date) {
         ErrorCode errorCode = ErrorCode.BAD_REQUEST_INVALID_WEEKLY_DATE;
         String message = String.format("%s. Invalid date format. Expected: %s. Received: %s", errorCode.getMessageCode(), DateUtils.AVAILABILITY_DATE_FORMAT, date);
+        return new BadRequestException(errorCode, message);
+    }
+
+    public static BadRequestException invalidRequest(HttpMessageConversionException e) {
+        ErrorCode errorCode = ErrorCode.BAD_REQUEST_INVALID_REQUEST;
+        String message = String.format("%s. %s", errorCode.getMessageCode(), e.getMessage());
         return new BadRequestException(errorCode, message);
     }
 }
