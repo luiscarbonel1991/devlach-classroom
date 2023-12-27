@@ -5,6 +5,7 @@ import com.devlach.classroom.courses.dto.CreateUpdateCourseDTO;
 import com.devlach.classroom.courses.gateway.CourseGateway;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
@@ -28,8 +29,12 @@ public class CourseController {
         return ResponseEntity.ok(courseGateway.findById(courseId, ownerEmail));
     }
     @PostMapping
-    public ResponseEntity<CourseDTO> createCourse(@RequestBody CreateUpdateCourseDTO courseDTO, @RequestParam String ownerEmail) {
-        return ResponseEntity.ok(courseGateway.create(courseDTO, ownerEmail));
+    public ResponseEntity<CourseDTO> createCourse(@RequestBody CreateUpdateCourseDTO courseDTO,
+                                                  @RequestParam String ownerEmail,
+                                                  UriComponentsBuilder ucb) {
+        var courseCreated = courseGateway.create(courseDTO, ownerEmail);
+        var url = ucb.path("/api/v1/courses/{id}").buildAndExpand(courseCreated.id()).toUri();
+        return ResponseEntity.created(url).body(courseCreated);
     }
 
     @PutMapping("/{courseId}")
