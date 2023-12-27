@@ -1,5 +1,8 @@
 package com.devlach.classroom.schedule.enums;
 
+import com.devlach.classroom.api.exception.BadRequestException;
+
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public enum DayOfWeek {
@@ -22,7 +25,11 @@ public enum DayOfWeek {
 
     public static DayOfWeek of(String dayOfWeek) {
         return Stream.of(values()).filter(d -> d.dayOfWeekName.equalsIgnoreCase(dayOfWeek)).findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Invalid dayOfWeek: " + dayOfWeek));
+                .orElseThrow(() -> BadRequestException.invalidDayOfWeek(dayOfWeek));
+    }
+
+    public static String daysOfWeekAsString() {
+        return Stream.of(values()).map(d -> d.dayOfWeekName).collect(Collectors.joining(", "));
     }
 
     public String dayOfWeek() {

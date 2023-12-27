@@ -7,7 +7,7 @@ import lombok.Data;
 import java.time.Instant;
 
 @Entity
-@Table(name = "profiles")
+@Table(name = "profile")
 @Data
 public class Profile {
 
