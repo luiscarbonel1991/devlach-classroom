@@ -334,6 +334,150 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "courses",
+			"item": [
+				{
+					"name": "courses-list",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{class-room-local-base-url}}/courses?ownerEmail=dev@test.com",
+							"host": [
+								"{{class-room-local-base-url}}"
+							],
+							"path": [
+								"courses"
+							],
+							"query": [
+								{
+									"key": "ownerEmail",
+									"value": "dev@test.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "courses-create",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"English Begineer New\",\n    \"description\": \"This is my first course New\",\n    \"pricing\": {\n        \"pricePerHour\": \"10\",\n        \"priceTrial\": \"5\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{class-room-local-base-url}}/courses?ownerEmail=dev@test.com",
+							"host": [
+								"{{class-room-local-base-url}}"
+							],
+							"path": [
+								"courses"
+							],
+							"query": [
+								{
+									"key": "ownerEmail",
+									"value": "dev@test.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "courses-by-id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{class-room-local-base-url}}/courses/1?ownerEmail=dev@test.com",
+							"host": [
+								"{{class-room-local-base-url}}"
+							],
+							"path": [
+								"courses",
+								"1"
+							],
+							"query": [
+								{
+									"key": "ownerEmail",
+									"value": "dev@test.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "courses-update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"English Begineer\",\n    \"description\": \"This is my first course\",\n    \"pricing\": {\n        \"pricePerHour\": \"11.222\",\n        \"priceTrial\": \"5.5555\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{class-room-local-base-url}}/courses/1?ownerEmail=dev@test.com",
+							"host": [
+								"{{class-room-local-base-url}}"
+							],
+							"path": [
+								"courses",
+								"1"
+							],
+							"query": [
+								{
+									"key": "ownerEmail",
+									"value": "dev@test.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "courses-delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{class-room-local-base-url}}/courses/2?ownerEmail=dev@test.com",
+							"host": [
+								"{{class-room-local-base-url}}"
+							],
+							"path": [
+								"courses",
+								"2"
+							],
+							"query": [
+								{
+									"key": "ownerEmail",
+									"value": "dev@test.com"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"event": [
