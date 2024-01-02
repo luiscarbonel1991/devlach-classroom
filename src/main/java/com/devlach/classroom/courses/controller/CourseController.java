@@ -32,7 +32,7 @@ public class CourseController {
     public ResponseEntity<CourseDTO> createCourse(@RequestBody CreateUpdateCourseDTO courseDTO,
                                                   @RequestParam String ownerEmail,
                                                   UriComponentsBuilder ucb) {
-        var courseCreated = courseGateway.create(courseDTO, ownerEmail);
+        var courseCreated = courseGateway.createDraft(courseDTO, ownerEmail);
         var url = ucb.path("/api/v1/courses/{id}").buildAndExpand(courseCreated.id()).toUri();
         return ResponseEntity.created(url).body(courseCreated);
     }
@@ -40,6 +40,16 @@ public class CourseController {
     @PutMapping("/{courseId}")
     public ResponseEntity<CourseDTO> updateCourse(@PathVariable Long courseId, @RequestBody CreateUpdateCourseDTO courseDTO, @RequestParam String ownerEmail) {
         return ResponseEntity.ok(courseGateway.update(courseId, courseDTO, ownerEmail));
+    }
+
+    @PatchMapping("/{courseId}/unpublished")
+    public ResponseEntity<CourseDTO> unpublishedCourse(@PathVariable Long courseId, @RequestParam String ownerEmail) {
+        return ResponseEntity.ok(courseGateway.unpublished(courseId, ownerEmail));
+    }
+
+    @PatchMapping("/{courseId}/published")
+    public ResponseEntity<CourseDTO> publishCourse(@PathVariable Long courseId, @RequestParam String ownerEmail) {
+        return ResponseEntity.ok(courseGateway.publish(courseId, ownerEmail));
     }
 
     @DeleteMapping("/{courseId}")

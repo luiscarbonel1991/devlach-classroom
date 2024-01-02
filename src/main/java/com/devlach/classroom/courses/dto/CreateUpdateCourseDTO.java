@@ -22,6 +22,12 @@ public record CreateUpdateCourseDTO(
         pricing.validate();
     }
 
+    public void validateCreateDraft() {
+        if (title == null) {
+            throw BadRequestException.requiredField("title");
+        }
+    }
+
     public void validateUpdate() {
         if (id == null) {
             throw BadRequestException.requiredField("id");

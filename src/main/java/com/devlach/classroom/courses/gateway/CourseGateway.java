@@ -10,10 +10,15 @@ public interface CourseGateway {
     List<CourseDTO> findAll(String ownerEmail);
 
     CourseDTO create(CreateUpdateCourseDTO createUpdateCourseDTO, String ownerEmail);
+    CourseDTO createDraft(CreateUpdateCourseDTO createUpdateCourseDTO, String ownerEmail);
 
     CourseDTO findById(Long courseId, String ownerEmail);
 
     CourseDTO update(Long courseId, CreateUpdateCourseDTO courseDTO, String ownerEmail);
 
     void delete(Long courseId, String ownerEmail);
+
+    CourseDTO unpublished(Long courseId, String ownerEmail);
+
+    CourseDTO publish(Long courseId, String ownerEmail);
 }

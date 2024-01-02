@@ -6,6 +6,9 @@ public record CourseDTO(
         Long id,
         String title,
         String description,
+        boolean published,
+        String imageUrl,
+        String videoUrl,
         List<CoursePricingDTO> pricing
 ) {
 }

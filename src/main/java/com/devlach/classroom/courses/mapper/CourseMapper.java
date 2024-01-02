@@ -6,6 +6,8 @@ import com.devlach.classroom.entity.Course;
 import com.devlach.classroom.entity.Profile;
 import lombok.experimental.UtilityClass;
 
+import java.util.Collections;
+
 @UtilityClass
 public class CourseMapper {
 
@@ -25,10 +27,15 @@ public class CourseMapper {
                 course.getId(),
                 course.getTitle(),
                 course.getDescription(),
-                course.getPricing().stream()
-                        .map(CoursePricingMapper::map)
-                        .map(ToCoursePricingDTO::toDTO)
-                        .toList()
+                course.isPublished(),
+                course.getImage(),
+                course.getVideo(),
+                course.getPricing() != null ?
+                        course.getPricing().stream()
+                                .map(CoursePricingMapper::map)
+                                .map(ToCoursePricingDTO::toDTO)
+                                .toList()
+                        : Collections.emptyList()
         );
     }
 }

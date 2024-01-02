@@ -41,6 +41,13 @@ public class CourseGatewayImpl implements CourseGateway {
     }
 
     @Override
+    public CourseDTO createDraft(CreateUpdateCourseDTO createUpdateCourseDTO, String ownerEmail) {
+        ProfileDTO profile = findProfileByTeacherEmail(ownerEmail);
+        Course course = courseService.createDraft(createUpdateCourseDTO, profile);
+        return CourseMapper.map(course).toDTO();
+    }
+
+    @Override
     public CourseDTO findById(Long courseId, String ownerEmail) {
         ProfileDTO profile = findProfileByTeacherEmail(ownerEmail);
         return CourseMapper.map(courseService.findByCourseIdAndTeacherId(courseId, profile.id())).toDTO();
@@ -56,6 +63,18 @@ public class CourseGatewayImpl implements CourseGateway {
     public void delete(Long courseId, String ownerEmail) {
         var profile = findProfileByTeacherEmail(ownerEmail);
         courseService.delete(courseId, profile.id());
+    }
+
+    @Override
+    public CourseDTO unpublished(Long courseId, String ownerEmail) {
+        var profile = findProfileByTeacherEmail(ownerEmail);
+        return CourseMapper.map(courseService.unpublished(courseId, profile.id())).toDTO();
+    }
+
+    @Override
+    public CourseDTO publish(Long courseId, String ownerEmail) {
+        var profile = findProfileByTeacherEmail(ownerEmail);
+        return CourseMapper.map(courseService.publish(courseId, profile.id())).toDTO();
     }
 
     private ProfileDTO findProfileByTeacherEmail(String ownerEmail) {

@@ -31,7 +31,8 @@ public class Course {
 
     private String category;
 
-    private boolean active;
+    @Column(name = "is_published", nullable = false)
+    private boolean isPublished;
 
     @Column(name = "created_at", updatable = false)
     private Instant createdAt;

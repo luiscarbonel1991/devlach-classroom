@@ -42,6 +42,14 @@ public class CourseService {
         return course;
     }
 
+    @Transactional
+    public Course createDraft(CreateUpdateCourseDTO dto, ProfileDTO profile) {
+        dto.validateCreateDraft();
+        var course = CourseMapper.map(dto, profile.id()).toEntity();
+        course = courseRepository.save(course);
+        return course;
+    }
+
     public Course findByCourseIdAndTeacherId(Long courseId, Long teacherId) {
         return Optional.ofNullable(courseRepository.findByIdAndTeacherProfileIdAndDeletedAtIsNull(courseId, teacherId))
                 .orElseThrow(() -> NotFoundException.courseId(courseId));
@@ -77,5 +85,17 @@ public class CourseService {
     public CoursePricing findCoursePricingById(Long coursePricingId) {
         return coursePricingRepository.findById(coursePricingId)
                 .orElseThrow(() -> NotFoundException.coursePricingId(coursePricingId));
+    }
+
+    public Course unpublished(Long courseId, Long id) {
+        var course = findByCourseIdAndTeacherId(courseId, id);
+        course.setPublished(false);
+        return courseRepository.save(course);
+    }
+
+    public Course publish(Long courseId, Long id) {
+        var course = findByCourseIdAndTeacherId(courseId, id);
+        course.setPublished(true);
+        return courseRepository.save(course);
     }
 }
