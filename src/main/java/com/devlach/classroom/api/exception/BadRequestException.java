@@ -1,12 +1,21 @@
 package com.devlach.classroom.api.exception;
 
+import com.devlach.classroom.entity.FileExtensionType;
 import com.devlach.classroom.utils.DateUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageConversionException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.method.annotation.MethodArgumentConversionNotSupportedException;
+
+import java.util.List;
 
 @ResponseStatus(HttpStatus.BAD_REQUEST)
+@Slf4j
 public class BadRequestException extends AppException {
+
+    public static final String ERROR_MS_FORMAT = "%s. %s";
 
     public BadRequestException(ErrorCode errorCode, String message) {
         super(errorCode, message);
@@ -99,7 +108,72 @@ public class BadRequestException extends AppException {
 
     public static BadRequestException invalidRequest(HttpMessageConversionException e) {
         ErrorCode errorCode = ErrorCode.BAD_REQUEST_INVALID_REQUEST;
-        String message = String.format("%s. %s", errorCode.getMessageCode(), e.getMessage());
+        String message = String.format(ERROR_MS_FORMAT, errorCode.getMessageCode(), e.getMessage());
+        return new BadRequestException(errorCode, message);
+    }
+
+    public static BadRequestException invalidRequest(MissingServletRequestParameterException e) {
+        ErrorCode errorCode = ErrorCode.BAD_REQUEST_INVALID_REQUEST;
+        String message = String.format(ERROR_MS_FORMAT, errorCode.getMessageCode(), e.getMessage());
+        return new BadRequestException(errorCode, message);
+    }
+
+    public static BadRequestException invalidRequest(MethodArgumentConversionNotSupportedException e) {
+        ErrorCode errorCode = ErrorCode.BAD_REQUEST_INVALID_REQUEST;
+        String message = String.format(ERROR_MS_FORMAT, errorCode.getMessageCode(), e.getMessage());
+        return new BadRequestException(errorCode, message);
+    }
+
+
+
+    public static BadRequestException uploadFile(Throwable e) {
+        log.error("Error occurred while uploading file", e);
+        ErrorCode errorCode = ErrorCode.BAD_REQUEST_UPLOAD_FILE;
+        String message = String.format("%s.", errorCode.getMessageCode());
+        return new BadRequestException(errorCode, message);
+    }
+
+    public static BadRequestException downloadFile(Throwable e) {
+        log.error("Error occurred while downloading file", e);
+        ErrorCode errorCode = ErrorCode.BAD_REQUEST_DOWNLOAD_FILE;
+        String message = String.format("%s.", errorCode.getMessageCode());
+        return new BadRequestException(errorCode, message);
+    }
+
+    public static BadRequestException deleteFile(Throwable e) {
+        log.error("Error occurred while downloading file", e);
+        ErrorCode errorCode = ErrorCode.BAD_REQUEST_DELETE_FILE;
+        String message = String.format("%s.", errorCode.getMessageCode());
+        return new BadRequestException(errorCode, message);
+    }
+
+    public static BadRequestException invalidImageBySize(long fileSize, long maxImageSize) {
+        ErrorCode errorCode = ErrorCode.BAD_REQUEST_INVALID_IMAGE_BY_SIZE;
+        String message = String.format("%s. File size: %s, Max image size: %s", errorCode.getMessageCode(), fileSize, maxImageSize);
+        return new BadRequestException(errorCode, message);
+    }
+
+    public static BadRequestException invalidImageByEmptyOrNull() {
+        ErrorCode errorCode = ErrorCode.BAD_REQUEST_INVALID_IMAGE_BY_SIZE;
+        String message = String.format("%s. File is empty or null", errorCode.getMessageCode());
+        return new BadRequestException(errorCode, message);
+    }
+
+    public static BadRequestException invalidImageByExtension(String extension, List<FileExtensionType> imagedTypes) {
+        ErrorCode errorCode = ErrorCode.BAD_REQUEST_INVALID_FILE_EXTENSION_TYPE;
+        String message = String.format("%s. Extension: %s, Expected: %s", errorCode.getMessageCode(), extension, imagedTypes);
+        return new BadRequestException(errorCode, message);
+    }
+
+    public static BadRequestException invalidEntityType(String entityType) {
+        ErrorCode errorCode = ErrorCode.BAD_REQUEST_INVALID_ENTITY_TYPE;
+        String message = String.format("%s. Entity type: %s", errorCode.getMessageCode(), entityType);
+        return new BadRequestException(errorCode, message);
+    }
+
+    public static BadRequestException categoryCanNotBeDeleted(Integer id) {
+        ErrorCode errorCode = ErrorCode.BAD_REQUEST_DEFAULT_CATEGORY_CAN_NOT_BE_DELETED;
+        String message = String.format(errorCode.getMessageCode(), id);
         return new BadRequestException(errorCode, message);
     }
 }

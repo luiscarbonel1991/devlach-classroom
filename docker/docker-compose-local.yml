@@ -13,3 +13,21 @@ services:
     volumes:
       - ./scripts/postgres/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
       - ./scripts/postgres/data:/var/lib/postgresql/data
+  localstack:
+    image: localstack/localstack
+    container_name: localstack
+    restart: always
+    environment:
+      - SERVICES=s3
+      - DEBUG=1
+      - DEFAULT_REGION=us-east-1
+      - AWS_ACCESS_KEY_ID=foo
+      - AWS_SECRET_ACCESS_KEY=bar
+      - AWS_DEFAULT_REGION=us-east-1
+    ports:
+      - "127.0.0.1:4566:4566"            # LocalStack Gateway
+      - "127.0.0.1:4510-4559:4510-4559"  # external services port range
+    volumes:
+      - "${LOCALSTACK_VOLUME_DIR:-./scripts/localstack/data}:/var/lib/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+

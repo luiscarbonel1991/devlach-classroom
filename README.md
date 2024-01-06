@@ -50,6 +50,19 @@ docker-compose -f ./docker/docker-compose-local.yml up classroomdb
 docker-compose -f ./docker/docker-compose-local.yml down -v
 ```
 
+### Starting Aws Localstack
+
+- Run the following command to start the aws localstack.
+```shell
+docker-compose -f ./docker/docker-compose-local.yml up localstack
+```
+
+- Clean the aws localstack.
+```shell
+docker-compose -f ./docker/docker-compose-local.yml down -v
+```
+
+
 ### Running the project
 
 - Make sure you have the database running.

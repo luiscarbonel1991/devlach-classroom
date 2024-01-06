@@ -7,9 +7,7 @@ import com.devlach.classroom.users.dto.RegisterUserDTO;
 import com.devlach.classroom.users.dto.UserDTO;
 import com.devlach.classroom.users.mapper.UserMapper;
 import com.devlach.classroom.users.service.UserService;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-import org.springframework.web.server.ResponseStatusException;
 
 @Component
 public class UserGatewayImpl implements UserGateway {

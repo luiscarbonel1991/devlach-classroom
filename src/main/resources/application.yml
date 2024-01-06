@@ -5,9 +5,20 @@ spring:
     password: classroom
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
     show-sql: true
   threads:
     virtual:
       enabled: true
-
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+aws:
+  s3:
+    buckets:
+      classroom:
+        access-key: ${AWS_BUCKET_CLASSROOM_ACCESS_KEY:foo}
+        secret-key: ${AWS_BUCKET_CLASSROOM_SECRET_KEY:bar}
+        region: ${AWS_BUCKET_CLASSROOM_REGION:us-east-1}
+        name: ${AWS_BUCKET_CLASSROOM_NAME:classroom}

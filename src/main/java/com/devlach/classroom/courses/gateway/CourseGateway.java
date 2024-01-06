@@ -2,6 +2,7 @@ package com.devlach.classroom.courses.gateway;
 
 import com.devlach.classroom.courses.dto.CourseDTO;
 import com.devlach.classroom.courses.dto.CreateUpdateCourseDTO;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -21,4 +22,6 @@ public interface CourseGateway {
     CourseDTO unpublished(Long courseId, String ownerEmail);
 
     CourseDTO publish(Long courseId, String ownerEmail);
+
+    CourseDTO uploadImage(Long courseId, String owner, String name, String description, MultipartFile file);
 }

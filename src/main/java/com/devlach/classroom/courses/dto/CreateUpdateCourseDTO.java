@@ -6,7 +6,9 @@ public record CreateUpdateCourseDTO(
         Long id,
         String title,
         String description,
-        CreateUpdateCoursePricing pricing
+        String videoUrl,
+        CreateUpdateCoursePricing pricing,
+        Integer categoryId
 ) {
 
     public void validateCreate() {
@@ -39,7 +41,6 @@ public record CreateUpdateCourseDTO(
     }
 
     public void validateUpdateWithoutId() {
-
         if(hasPricing()) {
             pricing.validate();
         }
@@ -50,10 +51,16 @@ public record CreateUpdateCourseDTO(
     }
 
     public boolean hasTitle() {
-        return title != null;
+        return title != null && !title.trim().isBlank();
     }
 
     public boolean hasDescription() {
-        return description != null;
+        return description != null && !description.isBlank();
+    }
+
+    public boolean hasVideoUrl() { return videoUrl != null && !videoUrl.trim().isBlank(); }
+
+    public boolean hasCategoryId() {
+        return categoryId != null;
     }
 }

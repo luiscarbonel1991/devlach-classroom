@@ -2,6 +2,7 @@ package com.devlach.classroom.api.exception;
 
 import com.devlach.classroom.entity.ClassPackageDurationType;
 import com.devlach.classroom.entity.ClassPackageStatusType;
+import com.devlach.classroom.entity.EntityType;
 import com.devlach.classroom.schedule.enums.DayOfWeek;
 
 public enum ErrorCode {
@@ -19,6 +20,8 @@ public enum ErrorCode {
     BAD_REQUEST_INVALID_CLASS_PACKAGE_DURATION("Invalid class package duration. Expected: " + ClassPackageDurationType.durationsAsString()),
 
     BAD_REQUEST_INVALID_DAY_OF_WEEK("Invalid day of week. Expected: " + DayOfWeek.daysOfWeekAsString()),
+
+    BAD_REQUEST_INVALID_ENTITY_TYPE("Invalid entity type. Expected: " + EntityType.entityTypesAsString()),
     BAD_REQUEST_INVALID_CLASS_PACKAGE_STATUS("Invalid class package status. Expected: " + ClassPackageStatusType.statusAsString()),
 
     BAD_REQUEST_PRICE_PER_HOUR_MUST_BE_GREATER_THAN_ZERO("Price per hour must be greater than zero"),
@@ -26,14 +29,31 @@ public enum ErrorCode {
     BAD_REQUEST_PRICE_TRIAL_MUST_BE_GREATER_THAN_ZERO("Price trial must be greater than zero"),
     BAD_REQUEST_PRICE_PER_HOUR_MUST_BE_GREATER_THAN_PRICE_TRIAL("Price per hour must be greater than price trial"),
     BAD_REQUEST_INVALID_FIELD("Invalid field"),
+
+    BAD_REQUEST_UPLOAD_FILE("Upload file error"),
+
+    BAD_REQUEST_DOWNLOAD_FILE("Download file error"),
+
+    BAD_REQUEST_DELETE_FILE("Delete file error"),
+
+    BAD_REQUEST_INVALID_FILE_EXTENSION_TYPE("Invalid file extension type"),
+
+    BAD_REQUEST_INVALID_IMAGE_BY_SIZE("Invalid image by size."),
+
+    BAD_REQUEST_DEFAULT_CATEGORY_CAN_NOT_BE_DELETED("Default category id: %s can not be deleted"),
     // 404
     RESOURCE_NOT_FOUND("Resource not found"),
+    NOT_FOUND_ATTACHMENT_ID("Not found attachment id"),
     NOT_FOUND_WEEKLY_AVAILABILITY_ID("Not found weekly availability id"),
     NOT_FOUND_REGULAR_AVAILABILITY_ID("Not found regular availability id"),
     NOT_FOUND_USER_EMAIL("Not found user email"),
     NOT_FOUND_USER_PROFILE("Not found user profile"),
     NOT_FOUND_COURSE_ID("Not found course id"),
     NOT_FOUND_COURSE_PRICING_ID("Not found course pricing id"),
+
+    /* Categories */
+    NOT_FOUND_PARENT_CATEGORY_ID("Not found parent category id"),
+    NOT_FOUND_CATEGORY_ID("Not found category id"),
     // 409
     CONFLICT("Conflict"),
     CONFLICT_WEEKLY_AVAILABILITY_OVERLAP("There is already an availability for the same date and time overlap"),

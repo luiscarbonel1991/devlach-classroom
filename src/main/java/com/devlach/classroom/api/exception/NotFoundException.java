@@ -48,4 +48,22 @@ public class NotFoundException extends AppException{
         String message = String.format(S_ID_S, errorCode.getMessageCode(), coursePricingId);
         return new NotFoundException(errorCode, message);
     }
+
+    public static RuntimeException attachmentNotFound(Long id) {
+        ErrorCode errorCode = ErrorCode.NOT_FOUND_ATTACHMENT_ID;
+        String message = String.format(S_ID_S, errorCode.getMessageCode(), id);
+        return new NotFoundException(errorCode, message);
+    }
+
+    public static RuntimeException parentCategoryId(Integer parentId) {
+        ErrorCode errorCode = ErrorCode.NOT_FOUND_PARENT_CATEGORY_ID;
+        String message = String.format(S_ID_S, errorCode.getMessageCode(), parentId);
+        return new NotFoundException(errorCode, message);
+    }
+
+    public static RuntimeException categoryId(Integer id) {
+        ErrorCode errorCode = ErrorCode.NOT_FOUND_CATEGORY_ID;
+        String message = String.format(S_ID_S, errorCode.getMessageCode(), id);
+        return new NotFoundException(errorCode, message);
+    }
 }

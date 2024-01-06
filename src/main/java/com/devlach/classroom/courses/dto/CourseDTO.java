@@ -1,14 +1,18 @@
 package com.devlach.classroom.courses.dto;
 
+import java.math.BigDecimal;
 import java.util.List;
 
-public record CourseDTO(
+public record  CourseDTO(
         Long id,
         String title,
         String description,
         boolean published,
-        String imageUrl,
+        Long attachmentImageId,
         String videoUrl,
-        List<CoursePricingDTO> pricing
+        BigDecimal pricePerHour,
+        BigDecimal priceTrial,
+        List<CoursePricingDTO> pricing,
+        CourseCategoryDTO category
 ) {
 }

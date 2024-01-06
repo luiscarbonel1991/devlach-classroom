@@ -10,14 +10,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.web.HttpMediaTypeException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentConversionNotSupportedException;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 @RestControllerAdvice(annotations = RestController.class)
@@ -47,6 +48,24 @@ public class ControllerAdviseHandler {
         }
         return getResponseEntityByException(BadRequestException.invalidRequest(e));
     }
+
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public ResponseEntity<Object> handleException(MissingServletRequestParameterException e) {
+        if (log.isDebugEnabled()) {
+            log.debug(e.getMessage(), e);
+        }
+        return getResponseEntityByException(BadRequestException.invalidRequest(e));
+    }
+
+    @ExceptionHandler(MethodArgumentConversionNotSupportedException.class)
+    public ResponseEntity<Object> handleException(MethodArgumentConversionNotSupportedException e) {
+        if (log.isDebugEnabled()) {
+            log.debug(e.getMessage(), e);
+        }
+        return getResponseEntityByException(BadRequestException.invalidRequest(e));
+    }
+
+
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleException(Exception e) {

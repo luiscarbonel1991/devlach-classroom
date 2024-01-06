@@ -29,7 +29,6 @@ public class Course {
 
     private String language;
 
-    private String category;
 
     @Column(name = "is_published", nullable = false)
     private boolean isPublished;
@@ -51,4 +50,32 @@ public class Course {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "teacher_profile_id")
     private Profile teacherProfile;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "image_attachment_id")
+    private Attachment imageAttachment;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;
+
+    public Course copy() {
+        var course = new Course();
+        course.setId(this.id);
+        course.setTitle(this.title);
+        course.setDescription(this.description);
+        course.setImage(this.image);
+        course.setVideo(this.video);
+        course.setLevel(this.level);
+        course.setLanguage(this.language);
+        course.setCategory(this.category);
+        course.setPublished(this.isPublished);
+        course.setCreatedAt(this.createdAt);
+        course.setUpdatedAt(this.updatedAt);
+        course.setDeletedAt(this.deletedAt);
+        course.setPricing(this.pricing);
+        course.setTeacherProfile(this.teacherProfile);
+        course.setImageAttachment(this.imageAttachment);
+        return course;
+    }
 }

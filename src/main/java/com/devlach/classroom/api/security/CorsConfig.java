@@ -20,7 +20,8 @@ public class CorsConfig {
             @SuppressWarnings("NullableProblems")
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins(allowedOrigins);
+                        .allowedOrigins(allowedOrigins)
+                        .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD", "TRACE", "CONNECT");
             }
         };
     }

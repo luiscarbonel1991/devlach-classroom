@@ -23,9 +23,18 @@ repositories {
     mavenCentral()
 }
 
+val awssdkVersion = "2.22.9"
+val awssdkCrtVersion = "0.29.4"
+
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web")
+    /* Aws */
+    implementation(platform("software.amazon.awssdk:bom:$awssdkVersion"))
+    implementation("software.amazon.awssdk:s3")
+    implementation("software.amazon.awssdk:s3-transfer-manager")
+    implementation("software.amazon.awssdk.crt:aws-crt:$awssdkCrtVersion")
+
     compileOnly("org.projectlombok:lombok")
     runtimeOnly("org.postgresql:postgresql")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")

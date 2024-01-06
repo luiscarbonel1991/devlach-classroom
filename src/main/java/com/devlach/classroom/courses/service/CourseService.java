@@ -6,6 +6,8 @@ import com.devlach.classroom.courses.mapper.CourseMapper;
 import com.devlach.classroom.courses.mapper.CoursePricingMapper;
 import com.devlach.classroom.courses.persistence.repository.CoursePricingRepository;
 import com.devlach.classroom.courses.persistence.repository.CourseRepository;
+import com.devlach.classroom.entity.Attachment;
+import com.devlach.classroom.entity.Category;
 import com.devlach.classroom.entity.Course;
 import com.devlach.classroom.entity.CoursePricing;
 import com.devlach.classroom.users.dto.ProfileDTO;
@@ -64,6 +66,9 @@ public class CourseService {
         if (courseDTO.hasDescription()) {
             currentCourse.setDescription(courseDTO.description());
         }
+        if(courseDTO.hasVideoUrl()) {
+            currentCourse.setVideo(courseDTO.videoUrl());
+        }
 
         if (courseDTO.hasPricing()) {
             var coursePricingToCreate = CoursePricingMapper.map(courseDTO.pricing(), courseId).toEntity();
@@ -73,6 +78,13 @@ public class CourseService {
             currentList.sort(Comparator.comparing(CoursePricing::getCreatedAt).reversed());
             currentCourse.setPricing(currentList);
         }
+
+        if(courseDTO.hasCategoryId()) {
+            var category = new Category();
+            category.setId(courseDTO.categoryId());
+            currentCourse.setCategory(category);
+        }
+
         return courseRepository.save(currentCourse);
     }
 
@@ -93,9 +105,21 @@ public class CourseService {
         return courseRepository.save(course);
     }
 
-    public Course publish(Long courseId, Long id) {
-        var course = findByCourseIdAndTeacherId(courseId, id);
+    public Course publish(Long courseId, Long teacherId) {
+        var course = findByCourseIdAndTeacherId(courseId, teacherId);
         course.setPublished(true);
         return courseRepository.save(course);
+    }
+
+    @Transactional
+    public Map<String, Course> uploadImage(Long courseId, Long teacherId, Long attachmentId) {
+        var course = findByCourseIdAndTeacherId(courseId, teacherId);
+        var attachment = new Attachment();
+        attachment.setId(attachmentId);
+        var map = new HashMap<String, Course>();
+        map.put("oldCourse", course.copy());
+        course.setImageAttachment(attachment);
+        map.put("newCourse", courseRepository.save(course));
+        return map;
     }
 }

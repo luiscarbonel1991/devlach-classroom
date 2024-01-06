@@ -15,6 +15,7 @@ public class UserMapper {
 
     public static ToUserDTO map(User user) {
         return () -> new UserDTO(
+                user.getId(),
                 user.getEmail(),
                 user.getProfiles().stream().map(p -> new ProfileDTO(
                         p.getId(),
